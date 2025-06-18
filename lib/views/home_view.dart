@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/view_models/weather_view_model.dart';
-import 'package:weather_app/views/weather_details.dart';
-import 'package:weather_app/widgets/app_button.dart';
-import 'package:weather_app/widgets/home_weather_details.dart';
+import 'package:weather_app/widgets/home_weather_details_card.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -57,9 +55,11 @@ class _HomeViewState extends State<HomeView> {
           weatherViewModel.isWeatherLoading
               ? SizedBox(
                   height: 300,
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(
+                    child: CircularProgressIndicator(color: Colors.blue),
+                  ),
                 )
-              : HomeWeatherDetails(),
+              : HomeWeatherDetailsCard(),
         ],
       ),
     );

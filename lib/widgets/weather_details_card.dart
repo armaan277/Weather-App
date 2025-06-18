@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 class WeatherDetailsCard extends StatelessWidget {
   final String title;
   final String? subtitle;
-  final IconData icon;
+  final IconData? icon;
+  final String country;
+  final bool showCountry;
   const WeatherDetailsCard({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.icon,
+    this.showCountry = false,
+    this.icon,
+    this.country = '',
   });
 
   @override
@@ -20,7 +24,9 @@ class WeatherDetailsCard extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Colors.amber),
+            showCountry == false
+                ? Icon(icon, color: Colors.amber)
+                : Text(country),
             SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
