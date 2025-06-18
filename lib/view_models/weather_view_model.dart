@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/models/weather.dart';
 import 'package:weather_app/repositories/weather_repository.dart';
+import 'package:weather_app/utils/app_custom_dialog.dart';
 
 class WeatherViewModel extends ChangeNotifier {
   final WeatherRepository _weatherRepository;
   WeatherViewModel({required WeatherRepository weatherRepository})
     : _weatherRepository = weatherRepository;
+
+  Weather? _weather;
+  Weather? get weather => _weather;
 
   String? _cityName;
   String? get cityName => _cityName;
@@ -24,35 +29,24 @@ class WeatherViewModel extends ChangeNotifier {
   String? _weatherStatusMain;
   String? get weatherStatusMain => _weatherStatusMain;
 
+  String? _weatherStatusIcon;
+  String? get weatherStatusIcon => _weatherStatusIcon;
+
   Future<void> getWeatherData({required BuildContext context}) async {
     final response = await _weatherRepository.getWeatherData();
     response.fold(
-      (l) => showDialog(
+      (l) => AppCustomDialog.showCustomDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Color(0xffF5F5F5),
-            title: Text(l),
-            actions: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusGeometry.circular(5.0),
-                  ),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Ok', style: TextStyle(color: Colors.white)),
-              ),
-            ],
-          );
-        },
+        title: l,
+        buttonTitle: 'Ok',
       ),
       (r) {
         _cityName = r.cityName;
-        _temperature = r.mainWeather.temp - 273.15;
+        _temperature = r.mainWeather.temp;
         _weatherStatusDescription = r.weatherStatus.description;
         _weatherStatusMain = r.weatherStatus.main;
+        _weatherStatusIcon = r.weatherStatus.icon;
+        _weather = r;
       },
     );
     _isWeatherLoading = false;
@@ -69,32 +63,18 @@ class WeatherViewModel extends ChangeNotifier {
       searchQuery: searchQuery,
     );
     response.fold(
-      (l) => showDialog(
+      (l) => AppCustomDialog.showCustomDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Color(0xffF5F5F5),
-            title: Text(l),
-            actions: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusGeometry.circular(5.0),
-                  ),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Ok', style: TextStyle(color: Colors.white)),
-              ),
-            ],
-          );
-        },
+        title: l,
+        buttonTitle: 'Ok',
       ),
       (r) {
         _cityName = r.cityName;
-        _temperature = r.mainWeather.temp - 273.15;
+        _temperature = r.mainWeather.temp;
         _weatherStatusDescription = r.weatherStatus.description;
         _weatherStatusMain = r.weatherStatus.main;
+        _weatherStatusIcon = r.weatherStatus.icon;
+        _weather = r;
       },
     );
     _isWeatherLoading = false;

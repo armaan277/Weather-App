@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
@@ -6,8 +7,9 @@ import 'package:weather_app/models/weather.dart';
 
 abstract class WeatherRepository {
   Future<Either<String, Weather>> getWeatherData();
-  Future<Either<String, Weather>> searchWeatherData({required String searchQuery});
-
+  Future<Either<String, Weather>> searchWeatherData({
+    required String searchQuery,
+  });
 }
 
 class WeatherRepositoryImp implements WeatherRepository {
@@ -38,6 +40,8 @@ class WeatherRepositoryImp implements WeatherRepository {
         return left(throw Exception('Something went wrong'));
       }
       return right(Weather.fromMap(mapResponse));
+    } on SocketException {
+      left(throw Exception('Check Your Connection'));
     } catch (e) {
       debugPrint(e.toString());
       return left(e.toString());
@@ -73,6 +77,8 @@ class WeatherRepositoryImp implements WeatherRepository {
         return left(throw Exception('Something went wrong'));
       }
       return right(Weather.fromMap(mapResponse));
+    } on SocketException {
+      left(throw Exception('Check Your Connection'));
     } catch (e) {
       debugPrint(e.toString());
       return left(e.toString());

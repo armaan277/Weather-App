@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/view_models/weather_view_model.dart';
 import 'package:weather_app/views/weather_details.dart';
+import 'package:weather_app/widgets/app_button.dart';
+import 'package:weather_app/widgets/home_weather_details.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -53,63 +55,11 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           weatherViewModel.isWeatherLoading
-              ? CircularProgressIndicator()
-              : Card(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20.0,
-                      horizontal: 12.0,
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          '${weatherViewModel.cityName}',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          '${weatherViewModel.weatherStatusMain}',
-                          style: TextStyle(fontSize: 20, color: Colors.black54),
-                        ),
-                        Text(
-                          '${weatherViewModel.temperature?.toStringAsFixed(1)}',
-                          style: TextStyle(fontSize: 30),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          '${weatherViewModel.weatherStatusDescription}',
-                          style: TextStyle(fontSize: 19),
-                        ),
-                        SizedBox(height: 10),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadiusGeometry.circular(5.0),
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return WeatherDetails();
-                                },
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'View Details',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              ? SizedBox(
+                  height: 300,
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              : HomeWeatherDetails(),
         ],
       ),
     );
