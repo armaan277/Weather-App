@@ -32,14 +32,22 @@ class WeatherViewModel extends ChangeNotifier {
   String? _weatherStatusIcon;
   String? get weatherStatusIcon => _weatherStatusIcon;
 
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
+
   Future<void> getWeatherData({required BuildContext context}) async {
+    _errorMessage = null;
+    notifyListeners();
     final response = await _weatherRepository.getWeatherData();
     response.fold(
-      (l) => AppCustomDialog.showCustomDialog(
-        context: context,
-        title: l,
-        buttonTitle: 'Ok',
-      ),
+      (l) {
+        AppCustomDialog.showCustomDialog(
+          context: context,
+          title: l,
+          buttonTitle: 'Ok',
+        );
+        _errorMessage = l;
+      },
       (r) {
         _cityName = r.cityName;
         _temperature = r.mainWeather.temp;
@@ -57,17 +65,21 @@ class WeatherViewModel extends ChangeNotifier {
     required BuildContext context,
     required String searchQuery,
   }) async {
+     _errorMessage = null;
     _isWeatherLoading = true;
     notifyListeners();
     final response = await _weatherRepository.searchWeatherData(
       searchQuery: searchQuery,
     );
     response.fold(
-      (l) => AppCustomDialog.showCustomDialog(
-        context: context,
-        title: l,
-        buttonTitle: 'Ok',
-      ),
+      (l) {
+        AppCustomDialog.showCustomDialog(
+          context: context,
+          title: l,
+          buttonTitle: 'Ok',
+        );
+        _errorMessage = l;
+      },
       (r) {
         _cityName = r.cityName;
         _temperature = r.mainWeather.temp;

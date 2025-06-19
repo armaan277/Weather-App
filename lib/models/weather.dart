@@ -34,8 +34,8 @@ class Weather {
 }
 
 class WeatherCoord {
-  final double lon;
-  final double lat;
+  final num lon;
+  final num lat;
 
   const WeatherCoord({required this.lon, required this.lat});
 

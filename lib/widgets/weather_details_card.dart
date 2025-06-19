@@ -28,18 +28,22 @@ class WeatherDetailsCard extends StatelessWidget {
                 ? Icon(icon, color: Colors.amber)
                 : Text(country),
             SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(color: Colors.black54, fontSize: 12),
-                ),
-                Text(
-                  '$subtitle',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(color: Colors.black54, fontSize: 12),
+                  ),
+                  Text(
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    '$subtitle',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

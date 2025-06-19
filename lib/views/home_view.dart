@@ -14,7 +14,9 @@ class _HomeViewState extends State<HomeView> {
   final searchController = TextEditingController();
   @override
   void initState() {
-    context.read<WeatherViewModel>().getWeatherData(context: context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<WeatherViewModel>().getWeatherData(context: context);
+    });
     super.initState();
   }
 
@@ -57,6 +59,20 @@ class _HomeViewState extends State<HomeView> {
                   height: 300,
                   child: Center(
                     child: CircularProgressIndicator(color: Colors.blue),
+                  ),
+                )
+              : weatherViewModel.errorMessage is String
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  child: Center(
+                    child: Text(
+                      '${weatherViewModel.errorMessage}',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 )
               : HomeWeatherDetailsCard(),

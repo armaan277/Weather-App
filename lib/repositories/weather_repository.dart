@@ -1,9 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:http/http.dart';
+import 'package:weather_app/constants/config/Endpoints.dart';
 import 'package:weather_app/models/weather.dart';
+import 'package:weather_app/services/newtwork/api_service.dart';
 
 abstract class WeatherRepository {
   Future<Either<String, Weather>> getWeatherData();
@@ -13,35 +12,13 @@ abstract class WeatherRepository {
 }
 
 class WeatherRepositoryImp implements WeatherRepository {
+  final _apiService = ApiService();
   @override
   Future<Either<String, Weather>> getWeatherData() async {
     try {
-      String url =
-          'https://api.openweathermap.org/data/2.5/weather?q=mumbai&appid=b8f74c658cfcf6456c896b9700e37f44';
-
-      Response response = await get(Uri.parse(url));
-      final mapResponse = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        debugPrint("Api Response -> ${response.statusCode} : $mapResponse");
-      } else if (response.statusCode == 401) {
-        debugPrint(
-          "Api Response -> ${response.statusCode} : ${mapResponse['message']}",
-        );
-        return left(mapResponse['message']);
-      } else if (response.statusCode == 404) {
-        debugPrint(
-          "Api Response -> ${response.statusCode} : ${mapResponse['message']}",
-        );
-        return left(mapResponse['message']);
-      } else {
-        debugPrint(
-          "Api Response -> ${response.statusCode} : ${mapResponse['message']}",
-        );
-        return left(throw Exception('Something went wrong'));
-      }
-      return right(Weather.fromMap(mapResponse));
-    } on SocketException {
-      left(throw Exception('Check Your Connection'));
+      String url = Endpoints.getWeatherData();
+      final response = await _apiService.getWeatherData(url);
+      return right(Weather.fromMap(response));
     } catch (e) {
       debugPrint(e.toString());
       return left(e.toString());
@@ -53,32 +30,9 @@ class WeatherRepositoryImp implements WeatherRepository {
     required String searchQuery,
   }) async {
     try {
-      String url =
-          'https://api.openweathermap.org/data/2.5/weather?q=$searchQuery&appid=b8f74c658cfcf6456c896b9700e37f44';
-
-      Response response = await get(Uri.parse(url));
-      final mapResponse = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        debugPrint("Api Response -> ${response.statusCode} : $mapResponse");
-      } else if (response.statusCode == 401) {
-        debugPrint(
-          "Api Response -> ${response.statusCode} : ${mapResponse['message']}",
-        );
-        return left(mapResponse['message']);
-      } else if (response.statusCode == 404) {
-        debugPrint(
-          "Api Response -> ${response.statusCode} : ${mapResponse['message']}",
-        );
-        return left(mapResponse['message']);
-      } else {
-        debugPrint(
-          "Api Response -> ${response.statusCode} : ${mapResponse['message']}",
-        );
-        return left(throw Exception('Something went wrong'));
-      }
-      return right(Weather.fromMap(mapResponse));
-    } on SocketException {
-      left(throw Exception('Check Your Connection'));
+      String url = Endpoints.searchWeatherData(searchQuery: searchQuery);
+      final response = await _apiService.getWeatherData(url);
+      return right(Weather.fromMap(response));
     } catch (e) {
       debugPrint(e.toString());
       return left(e.toString());
