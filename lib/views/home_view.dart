@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:weather_app/view_models/weather_view_model.dart';
+import 'package:weather_app/widgets/app_shimmer.dart';
 import 'package:weather_app/widgets/home_weather_details_card.dart';
 
 class HomeView extends StatefulWidget {
@@ -59,12 +61,7 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             weatherViewModel.isWeatherLoading
-                ? SizedBox(
-                    height: 300,
-                    child: Center(
-                      child: CircularProgressIndicator(color: Colors.blue),
-                    ),
-                  )
+                ? AppShimmer()
                 : weatherViewModel.errorMessage is String
                 ? SizedBox(
                     height: MediaQuery.of(context).size.height * 0.3,
