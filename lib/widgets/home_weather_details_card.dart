@@ -17,13 +17,13 @@ class HomeWeatherDetailsCard extends StatelessWidget {
         child: Column(
           children: [
             Image.network(
-              'https://openweathermap.org/img/wn/${weatherViewModel.weatherStatusIcon}@2x.png',
+              'https://openweathermap.org/img/wn/${weatherViewModel.weather.weatherStatus.icon}@2x.png',
               height: 50,
               width: 50,
             ),
             Text(
               textAlign: TextAlign.center,
-              '${weatherViewModel.cityName}',
+              weatherViewModel.weather.cityName,
               style: TextStyle(
                 color: Colors.blue,
                 fontSize: 28,
@@ -31,16 +31,16 @@ class HomeWeatherDetailsCard extends StatelessWidget {
               ),
             ),
             Text(
-              '${weatherViewModel.weatherStatusMain}',
+              weatherViewModel.weather.weatherStatus.main,
               style: TextStyle(fontSize: 18, color: Colors.black54),
             ),
             Text(
-              '${weatherViewModel.temperature?.toStringAsFixed(1)}',
+              weatherViewModel.weather.mainWeather.temp.toStringAsFixed(1),
               style: TextStyle(fontSize: 30),
             ),
             SizedBox(height: 5),
             Text(
-              '${weatherViewModel.weatherStatusDescription}',
+              weatherViewModel.weather.weatherStatus.description,
               style: TextStyle(fontSize: 19),
             ),
             SizedBox(height: 10),

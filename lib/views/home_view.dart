@@ -70,6 +70,7 @@ class _HomeViewState extends State<HomeView> {
                     height: MediaQuery.of(context).size.height * 0.3,
                     child: Center(
                       child: Text(
+                        textAlign: TextAlign.center,
                         '${weatherViewModel.errorMessage}',
                         style: TextStyle(
                           color: Colors.blue,

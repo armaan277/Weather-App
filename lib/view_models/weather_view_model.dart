@@ -8,29 +8,11 @@ class WeatherViewModel extends ChangeNotifier {
   WeatherViewModel({required WeatherRepository weatherRepository})
     : _weatherRepository = weatherRepository;
 
-  Weather? _weather;
-  Weather? get weather => _weather;
-
-  String? _cityName;
-  String? get cityName => _cityName;
-
-  double? _temperature;
-  double? get temperature => _temperature;
-
-  String? _cityDescription;
-  String? get cityDescription => _cityDescription;
+  late Weather _weather;
+  Weather get weather => _weather;
 
   bool _isWeatherLoading = true;
   bool get isWeatherLoading => _isWeatherLoading;
-
-  String? _weatherStatusDescription;
-  String? get weatherStatusDescription => _weatherStatusDescription;
-
-  String? _weatherStatusMain;
-  String? get weatherStatusMain => _weatherStatusMain;
-
-  String? _weatherStatusIcon;
-  String? get weatherStatusIcon => _weatherStatusIcon;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
@@ -49,11 +31,6 @@ class WeatherViewModel extends ChangeNotifier {
         _errorMessage = l;
       },
       (r) {
-        _cityName = r.cityName;
-        _temperature = r.mainWeather.temp;
-        _weatherStatusDescription = r.weatherStatus.description;
-        _weatherStatusMain = r.weatherStatus.main;
-        _weatherStatusIcon = r.weatherStatus.icon;
         _weather = r;
       },
     );
@@ -65,7 +42,7 @@ class WeatherViewModel extends ChangeNotifier {
     required BuildContext context,
     required String searchQuery,
   }) async {
-     _errorMessage = null;
+    _errorMessage = null;
     _isWeatherLoading = true;
     notifyListeners();
     final response = await _weatherRepository.searchWeatherData(
@@ -81,11 +58,6 @@ class WeatherViewModel extends ChangeNotifier {
         _errorMessage = l;
       },
       (r) {
-        _cityName = r.cityName;
-        _temperature = r.mainWeather.temp;
-        _weatherStatusDescription = r.weatherStatus.description;
-        _weatherStatusMain = r.weatherStatus.main;
-        _weatherStatusIcon = r.weatherStatus.icon;
         _weather = r;
       },
     );
