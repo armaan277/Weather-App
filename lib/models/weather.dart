@@ -136,7 +136,7 @@ class WeatherSys {
 
   factory WeatherSys.fromMap(Map map) {
     return WeatherSys(
-      country: map['country'],
+      country: map['country'] ?? 'No Country',
       sunrise: map['sunrise'],
       sunset: map['sunset'],
     );

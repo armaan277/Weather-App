@@ -23,60 +23,65 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final weatherViewModel = context.watch<WeatherViewModel>();
-    return Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text('Weather App', style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              color: Colors.white,
-              child: TextField(
-                controller: searchController,
-                onSubmitted: (value) {
-                  context.read<WeatherViewModel>().searchWeatherData(
-                    searchQuery: value,
-                    context: context,
-                  );
-                  searchController.clear();
-                },
-                textInputAction: TextInputAction.search,
-                decoration: InputDecoration(
-                  hintText: 'Enter City',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.search),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: Color(0xffF5F5F5),
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          title: Text('Weather App', style: TextStyle(color: Colors.white)),
+          centerTitle: true,
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                color: Colors.white,
+                child: TextField(
+                  controller: searchController,
+                  onSubmitted: (value) {
+                    context.read<WeatherViewModel>().searchWeatherData(
+                      searchQuery: value,
+                      context: context,
+                    );
+                    searchController.clear();
+                  },
+                  textInputAction: TextInputAction.search,
+                  decoration: InputDecoration(
+                    hintText: 'Enter City',
+                    border: OutlineInputBorder(),
+                    suffixIcon: Icon(Icons.search),
+                  ),
                 ),
               ),
             ),
-          ),
-          weatherViewModel.isWeatherLoading
-              ? SizedBox(
-                  height: 300,
-                  child: Center(
-                    child: CircularProgressIndicator(color: Colors.blue),
-                  ),
-                )
-              : weatherViewModel.errorMessage is String
-              ? SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: Center(
-                    child: Text(
-                      '${weatherViewModel.errorMessage}',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
+            weatherViewModel.isWeatherLoading
+                ? SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: CircularProgressIndicator(color: Colors.blue),
+                    ),
+                  )
+                : weatherViewModel.errorMessage is String
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: Center(
+                      child: Text(
+                        '${weatherViewModel.errorMessage}',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                )
-              : HomeWeatherDetailsCard(),
-        ],
+                  )
+                : HomeWeatherDetailsCard(),
+          ],
+        ),
       ),
     );
   }

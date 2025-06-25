@@ -11,7 +11,14 @@ class WeatherDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final countryCode = weather?.weatherSys.country;
-    final country = Country.parse(countryCode!);
+    Country? country;
+    if (countryCode != null && countryCode.isNotEmpty) {
+      try {
+        country = Country.parse(countryCode);
+      } catch (e) {
+        country = null;
+      }
+    }
 
     List<WeatherDetailsCard> weatherDetailsCard = [
       WeatherDetailsCard(
@@ -101,8 +108,8 @@ class WeatherDetailsView extends StatelessWidget {
       WeatherDetailsCard(
         showCountry: true,
         title: 'Country',
-        subtitle: country.name,
-        country: country.flagEmoji,
+        subtitle: country?.name ?? 'Unknown',
+        country: country?.flagEmoji ?? '🚫',
       ),
     ];
 
